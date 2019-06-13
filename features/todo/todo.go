@@ -1,12 +1,20 @@
 package todo
 
 import (
+	"github.com/kovinepanda/todo-go/internal/config"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 )
 
+type Config struct {
+	*config.Config
+}
+
+func New(configuration *config.Config) *Config {
+	return &Config{configuration}
+}
 
 type Todo struct {
 	Slug string `json:"slug"`
@@ -14,7 +22,7 @@ type Todo struct {
 	Body string `json:"body"`
 }
 
-func Routes() *chi.Mux {
+func (config *Config) Routes() *chi.Mux {
 	router := chi.NewRouter()
 	router.Get("/{todoID}", GetATodo)
 	router.Delete("/{todoID}", DeleteTodo)
